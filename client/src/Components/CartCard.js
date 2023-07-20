@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CartCard = ({ cartItem, removeFromCart }) => {
+const CartCard = ({ cartItem, removeFromCart, calculateAmount }) => {
   const [productCount, setProductCount] = useState(1);
 
   return (
@@ -29,6 +29,7 @@ const CartCard = ({ cartItem, removeFromCart }) => {
             onClick={() => {
               setProductCount((prev) => {
                 if (prev > 1) {
+                  calculateAmount(-cartItem.price);
                   return prev - 1;
                 }
                 return prev;
@@ -43,6 +44,7 @@ const CartCard = ({ cartItem, removeFromCart }) => {
             onClick={() => {
               setProductCount((prev) => {
                 if (prev < 10) {
+                  calculateAmount(cartItem.price);
                   return prev + 1;
                 }
                 return prev;

@@ -4,12 +4,18 @@ import Header from "./Components/Header";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   // function to remove product from cart
   const removeFromCart = (cartItem) => {
     const updatedCart = cartItems.filter((item) => item.id !== cartItem.id);
     setCartItems(updatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  };
+
+  // function to calculate the amount
+  const calculateAmount = (amount) => {
+    setTotalAmount(totalAmount + amount);
   };
 
   useEffect(() => {
@@ -19,6 +25,11 @@ const Cart = () => {
     } else {
       myCart = [];
     }
+    let amount = 0;
+    for (let i = 0; i < myCart.length; i++) {
+      amount += myCart[i].price;
+    }
+    setTotalAmount(amount);
     setCartItems(myCart);
   }, []);
 
@@ -38,6 +49,7 @@ const Cart = () => {
                   key={index}
                   cartItem={cartItem}
                   removeFromCart={removeFromCart}
+                  calculateAmount={calculateAmount}
                 />
               );
             })}
@@ -49,7 +61,7 @@ const Cart = () => {
           <div className="self-end mr-10 bg-cyan-100 p-3 rounded-md font-semibold w-60 space-y-5 mb-10">
             <div className="flex items-center justify-between">
               <h3>Subtotal</h3>
-              <p>&#8377; 600</p>
+              <p>&#8377; {totalAmount}</p>
             </div>
             <button className="bg-cyan-500 w-full text-white font-bold py-2 rounded-md px-5">
               Checkout
