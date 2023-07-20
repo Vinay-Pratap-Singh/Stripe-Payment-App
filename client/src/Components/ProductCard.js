@@ -1,22 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductCard = ({ product }) => {
-  // getting cart from local storage
-  let cartItems = localStorage.getItem("cartItems");
-  if (cartItems) {
-    cartItems = JSON.parse(cartItems);
-  } else {
-    cartItems = [];
-  }
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    let myCart = localStorage.getItem("cartItems");
+    if (myCart) {
+      myCart = JSON.parse(myCart);
+    } else {
+      myCart = [];
+    }
+    setCartItems(myCart);
+  }, [cartItems]);
 
   // function to add the product in cart
   const addProductToCart = () => {
     // checking that the element is already in cartItem or not
+    let isProductExist = false;
     for (let i = 0; i < cartItems.length; i++) {
       if (cartItems[i]?.id === product?.id) {
         window.alert("Product is already in cart");
+        isProductExist = true;
         break;
       }
+    }
+    if (isProductExist) {
+      return;
     }
 
     cartItems.push(product);
