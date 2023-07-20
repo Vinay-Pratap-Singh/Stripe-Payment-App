@@ -5,6 +5,13 @@ import Header from "./Components/Header";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
 
+  // function to remove product from cart
+  const removeFromCart = (cartItem) => {
+    const updatedCart = cartItems.filter((item) => item.id !== cartItem.id);
+    setCartItems(updatedCart);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  };
+
   useEffect(() => {
     let myCart = localStorage.getItem("cartItems");
     if (myCart) {
@@ -13,7 +20,7 @@ const Cart = () => {
       myCart = [];
     }
     setCartItems(myCart);
-  }, [cartItems]);
+  }, []);
 
   return (
     <div>
@@ -26,7 +33,13 @@ const Cart = () => {
         ) : (
           <div className="flex flex-col items-center gap-10">
             {cartItems.map((cartItem, index) => {
-              return <CartCard key={index} cartItem={cartItem} />;
+              return (
+                <CartCard
+                  key={index}
+                  cartItem={cartItem}
+                  removeFromCart={removeFromCart}
+                />
+              );
             })}
           </div>
         )}

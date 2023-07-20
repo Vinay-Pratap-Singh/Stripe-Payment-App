@@ -1,26 +1,7 @@
 import React, { useState } from "react";
 
-const CartCard = ({ cartItem }) => {
+const CartCard = ({ cartItem, removeFromCart }) => {
   const [productCount, setProductCount] = useState(1);
-
-  // function to remove item from cart
-  const removeFromCart = () => {
-    let cartItems = localStorage.getItem("cartItems");
-    if (cartItems) {
-      cartItems = JSON.parse(cartItems);
-    } else {
-      cartItems = [];
-    }
-
-    // removing item
-    for (let i = 0; i < cartItems.length; i++) {
-      if (cartItems[i]?.id === cartItem?.id) {
-        cartItems.splice(i, 1);
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        break;
-      }
-    }
-  };
 
   return (
     <div className="w-[90vw] flex items-center justify-between px-10 shadow-lg">
@@ -30,7 +11,10 @@ const CartCard = ({ cartItem }) => {
         <div>
           <h3>{cartItem?.productName}</h3>
           <p>{cartItem?.description}</p>
-          <button className="font-semibold text-xl" onClick={removeFromCart}>
+          <button
+            className="font-semibold text-xl"
+            onClick={() => removeFromCart(cartItem)}
+          >
             Remove
           </button>
         </div>

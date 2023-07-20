@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
       myCart = [];
     }
     setCartItems(myCart);
-  }, [cartItems]);
+  }, []);
 
   // function to add the product in cart
   const addProductToCart = () => {
