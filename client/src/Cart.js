@@ -18,6 +18,18 @@ const Cart = () => {
     setTotalAmount(totalAmount + amount);
   };
 
+  // function to handle the payment checkout
+  const handleCheckout = () => {
+    fetch("http://localhost:5000/create-checkout-session", {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((resData) => console.log(resData))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     let myCart = localStorage.getItem("cartItems");
     if (myCart) {
@@ -63,7 +75,10 @@ const Cart = () => {
               <h3>Subtotal</h3>
               <p>&#8377; {totalAmount}</p>
             </div>
-            <button className="bg-cyan-500 w-full text-white font-bold py-2 rounded-md px-5">
+            <button
+              className="bg-cyan-500 w-full text-white font-bold py-2 rounded-md px-5"
+              onClick={handleCheckout}
+            >
               Checkout
             </button>
           </div>
