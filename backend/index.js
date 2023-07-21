@@ -1,20 +1,27 @@
 import "dotenv/config";
 import express from "express";
-import mongoose from "mongoose";
-const app = express();
-const port = process.env.PORT || 5000;
+import cors from "cors";
+import { connectDB } from "./config/db.js";
+import { checkoutRoute } from "./routes/checkout.js";
 
-// mongodb connection
-const dbURL = process.env.MONGODB_URI || "mongodb://localhost:27017/mydatabase";
-mongoose.connect(dbURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB successfully!");
-});
+const app = express();
+
+// for cors
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+// adding the middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// connecting to database
+const port = process.env.PORT || 8000;
+connectDB();
+
+app.use("/", checkoutRoute);
 
 // starting the server
 app.listen(port, () => {
