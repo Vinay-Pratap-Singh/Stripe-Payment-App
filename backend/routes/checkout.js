@@ -8,7 +8,6 @@ export const checkoutRoute = router.post(
     const API_KEY = process.env.STRIPE_API_KEY;
     const FRONTEND = process.env.FRONTEND;
     const stripeInstance = stripe(API_KEY);
-    s;
 
     const line_items = req.body.map((item) => {
       return {
