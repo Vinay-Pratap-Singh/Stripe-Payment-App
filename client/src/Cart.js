@@ -24,7 +24,12 @@ const Cart = () => {
       method: "POST",
     })
       .then((res) => res.json())
-      .then((resData) => console.log(resData))
+      .then((resData) => {
+        console.log(resData);
+        if (resData?.url) {
+          window.location.href = resData?.url;
+        }
+      })
       .catch((error) => {
         console.log(error);
       });
