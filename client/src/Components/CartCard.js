@@ -29,7 +29,7 @@ const CartCard = ({ cartItem, removeFromCart, calculateAmount }) => {
             onClick={() => {
               setProductCount((prev) => {
                 if (prev > 1) {
-                  calculateAmount(-cartItem.price);
+                  calculateAmount(-cartItem.price, cartItem?.id);
                   return prev - 1;
                 }
                 return prev;
@@ -44,7 +44,7 @@ const CartCard = ({ cartItem, removeFromCart, calculateAmount }) => {
             onClick={() => {
               setProductCount((prev) => {
                 if (prev < 10) {
-                  calculateAmount(cartItem.price);
+                  calculateAmount(cartItem.price, cartItem?.id);
                   return prev + 1;
                 }
                 return prev;

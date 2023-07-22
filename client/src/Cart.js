@@ -5,27 +5,42 @@ import Header from "./Components/Header";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [newCartItems, setNewCartItems] = useState(cartItems);
 
   // function to remove product from cart
   const removeFromCart = (cartItem) => {
     const updatedCart = cartItems.filter((item) => item.id !== cartItem.id);
+    const newupdatedCart = newCartItems.filter(
+      (item) => item.id !== cartItem.id
+    );
     setCartItems(updatedCart);
+    setNewCartItems(newupdatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
 
   // function to calculate the amount
-  const calculateAmount = (amount) => {
+  const calculateAmount = (amount, id) => {
     setTotalAmount(totalAmount + amount);
+    for (let i = 0; i < newCartItems.length; i++) {
+      if (newCartItems[i].id === id) {
+        const item = [...newCartItems];
+        item[i].quantity += 1;
+        setNewCartItems(item);
+      }
+    }
   };
 
   // function to handle the payment checkout
   const handleCheckout = () => {
     fetch("http://localhost:5000/create-checkout-session", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItems),
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData?.url) {
           window.location.href = resData?.url;
         }
@@ -48,6 +63,10 @@ const Cart = () => {
     }
     setTotalAmount(amount);
     setCartItems(myCart);
+    for (let i = 0; i < myCart.length; i++) {
+      myCart[i]["quantity"] = 1;
+    }
+    setNewCartItems(myCart);
   }, []);
 
   return (
