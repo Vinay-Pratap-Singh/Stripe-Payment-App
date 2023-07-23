@@ -15,10 +15,17 @@ const ProductCard = ({ product }) => {
 
   // function to add the product in cart
   const addProductToCart = () => {
+    // getting cart items from localstorage
+    let myCart = localStorage.getItem("cartItems");
+    if (myCart) {
+      myCart = JSON.parse(myCart);
+    } else {
+      myCart = [];
+    }
     // checking that the element is already in cartItem or not
     let isProductExist = false;
-    for (let i = 0; i < cartItems.length; i++) {
-      if (cartItems[i]?.id === product?.id) {
+    for (let i = 0; i < myCart.length; i++) {
+      if (myCart[i]?.id === product?.id) {
         window.alert("Product is already in cart");
         isProductExist = true;
         break;
@@ -28,8 +35,8 @@ const ProductCard = ({ product }) => {
       return;
     }
 
-    cartItems.push(product);
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    myCart.push(product);
+    localStorage.setItem("cartItems", JSON.stringify(myCart));
     window.alert("Product added to cart");
   };
 

@@ -8,7 +8,7 @@ const Cart = () => {
   const [newCartItems, setNewCartItems] = useState(cartItems);
 
   // function to remove product from cart
-  const removeFromCart = (cartItem) => {
+  const removeFromCart = (cartItem, productCount) => {
     const updatedCart = cartItems.filter((item) => item.id !== cartItem.id);
     const newupdatedCart = newCartItems.filter(
       (item) => item.id !== cartItem.id
@@ -16,15 +16,17 @@ const Cart = () => {
     setCartItems(updatedCart);
     setNewCartItems(newupdatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    // calculating the price again
+    setTotalAmount(totalAmount - cartItem.price * productCount);
   };
 
   // function to calculate the amount
-  const calculateAmount = (amount, id) => {
+  const calculateAmount = (amount, id, isIncrement) => {
     setTotalAmount(totalAmount + amount);
     for (let i = 0; i < newCartItems.length; i++) {
       if (newCartItems[i].id === id) {
         const item = [...newCartItems];
-        item[i].quantity += 1;
+        isIncrement ? (item[i].quantity += 1) : (item[i].quantity -= 1);
         setNewCartItems(item);
       }
     }
@@ -37,7 +39,7 @@ const Cart = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(cartItems),
+      body: JSON.stringify(newCartItems),
     })
       .then((res) => res.json())
       .then((resData) => {

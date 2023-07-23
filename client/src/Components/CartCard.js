@@ -13,7 +13,7 @@ const CartCard = ({ cartItem, removeFromCart, calculateAmount }) => {
           <p>{cartItem?.description}</p>
           <button
             className="font-semibold text-xl"
-            onClick={() => removeFromCart(cartItem)}
+            onClick={() => removeFromCart(cartItem, productCount)}
           >
             Remove
           </button>
@@ -29,7 +29,7 @@ const CartCard = ({ cartItem, removeFromCart, calculateAmount }) => {
             onClick={() => {
               setProductCount((prev) => {
                 if (prev > 1) {
-                  calculateAmount(-cartItem.price, cartItem?.id);
+                  calculateAmount(-cartItem.price, cartItem?.id, false);
                   return prev - 1;
                 }
                 return prev;
@@ -44,7 +44,7 @@ const CartCard = ({ cartItem, removeFromCart, calculateAmount }) => {
             onClick={() => {
               setProductCount((prev) => {
                 if (prev < 10) {
-                  calculateAmount(cartItem.price, cartItem?.id);
+                  calculateAmount(cartItem.price, cartItem?.id, true);
                   return prev + 1;
                 }
                 return prev;
